@@ -85,7 +85,8 @@ Para apresiar mejor el funcionamiento de HATEOAS puedes ir a Postman con la url 
 * GET http://localhost:8000/api/ : Te proporcionara **/productos** para empezar a navegar
 * POST **URLBase/productos**: Puedes cargar una lista de productos para poder probrar las funciones
 
-
+# 🤝🏻Contribuciones
+Si encuentras un erro o tienes alguna sugerencia, siente libre de abrir un issue o enviar una pull request
 
 
 
