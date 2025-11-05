@@ -1,16 +1,18 @@
 from rest_framework import serializers
 from .models import Orden
+from api.carrito.models import Carrito
 
 class OrdenSerializer(serializers.ModelSerializer):
     """
     Serializer para el modelo Orden con lógica HATEOAS condicional basada en 'estatus'.
     """
     _links = serializers.SerializerMethodField()
+    carrito = serializers.PrimaryKeyRelatedField(queryset=Carrito.objects.all(), write_only=True)
     carrito_id = serializers.ReadOnlyField(source='carrito.id')
 
     class Meta:
         model = Orden
-        fields = ['id', 'carrito_id', 'estatus', 'fecha_orden', '_links']
+        fields = ['id', 'carrito','carrito_id', 'estatus', 'fecha_orden', '_links']
 
     def get__links(self, obj):
         """Genera enlaces condicionales según el estatus de la orden."""
@@ -20,11 +22,11 @@ class OrdenSerializer(serializers.ModelSerializer):
 
         links = {
             'self': {
-                'href': request.build_absolute_uri(f'/ordenes/{obj.id}/'),
+                'href': request.build_absolute_uri(f'/api/ordenes/{obj.id}/'),
                 'method': 'GET',
             },
             'list_all': {
-                'href': request.build_absolute_uri('/ordenes/'),
+                'href': request.build_absolute_uri('/api/ordenes/'),
                 'method': 'GET',
             },
         }
@@ -32,23 +34,18 @@ class OrdenSerializer(serializers.ModelSerializer):
         # --- Lógica Condicional HATEOAS ---
         if obj.estatus == 'pendiente':
             links['pay'] = {
-                'href': request.build_absolute_uri(f'/ordenes/{obj.id}/pay/'),
+                'href': request.build_absolute_uri(f'/api/ordenes/{obj.id}/pay/'),
                 'method': 'POST',
                 'description': 'Confirma el pago de la orden.'
             }
             links['cancel'] = {
-                'href': request.build_absolute_uri(f'/ordenes/{obj.id}/cancel/'),
+                'href': request.build_absolute_uri(f'/api/ordenes/{obj.id}/cancel/'),
                 'method': 'DELETE',
                 'description': 'Cancela la orden.'
             }
         elif obj.estatus == 'pagado':
-            links['track_shipment'] = {
-                'href': request.build_absolute_uri(f'/ordenes/{obj.id}/rastrear/'),
-                'method': 'GET',
-                'description': 'Rastrea el envío del pedido.'
-            }
             links['refund'] = {
-                'href': request.build_absolute_uri(f'/ordenes/{obj.id}/reembolsar/'),
+                'href': request.build_absolute_uri(f'/api/ordenes/{obj.id}/reembolsar/'),
                 'method': 'POST',
                 'description': 'Solicita un reembolso de la orden.'
             }

@@ -19,16 +19,16 @@ class ProductoSerializer(serializers.ModelSerializer):
             
         return {
             'self': {
-                'href': request.build_absolute_uri(f'/productos/{obj.id}/'),
+                'href': request.build_absolute_uri(f'/api/productos/{obj.id}/'),
                 'method': 'GET',
             },
             'list_all': {
-                'href': request.build_absolute_uri('/productos/'),
+                'href': request.build_absolute_uri('/api/productos/'),
                 'method': 'GET',
             },
             'add_to_cart': {
                 # Asumimos un endpoint para agregar a un carrito, p.ej. /carritos/add/
-                'href': request.build_absolute_uri(f'/carritos/add/{obj.id}/'), 
+                'href': request.build_absolute_uri(f'/api/carritos/add/{obj.id}/'), 
                 'method': 'POST',
                 'description': 'POST {"cantidad": 1} para añadir este producto al carrito activo/nuevo.',
             },

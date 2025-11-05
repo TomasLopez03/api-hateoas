@@ -21,7 +21,7 @@ class CarritoViewSet(viewsets.GenericViewSet):
             return Response({'detail': 'Producto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
             
         # Simplificación: Usar el primer carrito, o crear uno si no existe.
-        carrito, created = Carrito.objects.get_or_create(id=1) 
+        carrito, created = Carrito.objects.get_or_create(id=2) 
         cantidad = request.data.get('cantidad', 1)
         
         item, created = ItemCarrito.objects.get_or_create(
