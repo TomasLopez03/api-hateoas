@@ -74,6 +74,8 @@ Ejecuta el script de inicio:
 Deberías ver un mensaje en la consola indicando que el servidor se ha iniciado, 
 probablemente en http://localhost:8000
 
+------
+
 # Documentacion (Swagger)
 
 Para ver la documentacion y explorar la api, a la url: 
